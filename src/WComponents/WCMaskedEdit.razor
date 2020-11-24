@@ -6,10 +6,8 @@
        @attributes="AdditionalAttributes"
        class="@CssClass"
        value="@CurrentValue"
-       @oninput="EventCallback.Factory.CreateBinder<string>(
-         this, __value => CurrentValueAsString = __value,
-         CurrentValueAsString)"
-       @onkeypress="KeyWasPressed" />
+       @oninput="EventCallback.Factory.CreateBinder<string>(this, __value => CurrentValueAsString = __value, CurrentValueAsString)"
+       @onkeypress="KeyPressed" />
 
 @code
 {
@@ -18,7 +16,7 @@
 
     ElementReference InputElementReference;
 
-    private void KeyWasPressed(KeyboardEventArgs args)
+    private void KeyPressed(KeyboardEventArgs args)
     {
         if (args.Key == "r")
         {

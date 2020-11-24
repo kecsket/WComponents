@@ -14,7 +14,7 @@
 @code
 {
     private Task<IJSObjectReference> _module;
-    private Task<IJSObjectReference> Module => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/WCMaskedEdit.js").AsTask();
+    private Task<IJSObjectReference> Module => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/WComponents/js/WCMaskedEdit.js").AsTask();
 
     ElementReference InputElementReference;
 

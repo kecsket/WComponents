@@ -1,8 +1,5 @@
 ﻿export function setCaretPosition(element, pos)
 {
-    alert('Vagyok');
-    //var ctrl = document.getElementById(inputId);
-
     if (element.setSelectionRange)
     {
         element.focus();

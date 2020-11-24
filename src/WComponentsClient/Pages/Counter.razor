@@ -1,0 +1,49 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<EditForm Model="model">
+    <DataAnnotationsValidator />
+
+    <WComponents.WCMaskedEdit @bind-Value="model.Text" />
+    <ValidationMessage For="() => model.Text" />
+
+    <div>
+        Current value: @model.Text
+    </div>
+
+    <InputText @bind-Value="model.Text1" />
+    <ValidationMessage For="() => model.Text1" />
+
+    <div>
+        Current value: @model.Text1
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+
+    }
+
+    Model model = new Model();
+
+    class Model
+    {
+        [StringLength(maximumLength: 10, MinimumLength = 3)]
+        public string Text { get; set; }
+        [StringLength(maximumLength: 10, MinimumLength = 3)]
+        public string Text1 { get; set; }
+    }
+}
+
+

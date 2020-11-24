@@ -1,0 +1,48 @@
+@inherits InputText
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+<input @ref=InputElementReference
+       @attributes="AdditionalAttributes"
+       class="@CssClass"
+       value="@CurrentValue"
+       @oninput="EventCallback.Factory.CreateBinder<string>(
+         this, __value => CurrentValueAsString = __value,
+         CurrentValueAsString)"
+       @onkeypress="KeyWasPressed" />
+
+@code
+{
+    private Task<IJSObjectReference> _module;
+    private Task<IJSObjectReference> Module => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/WCMaskedEdit.js").AsTask();
+
+    ElementReference InputElementReference;
+
+    private void KeyWasPressed(KeyboardEventArgs args)
+    {
+        if (args.Key == "r")
+        {
+            CurrentValueAsString = "httthhhhhr";
+
+        }
+        if (args.Key == "t")
+        {
+            Task.Run(async () => await SetCaretPosition(2));
+        }
+    }
+
+    private async Task SetCaretPosition(int position)
+    {
+        var module = await Module;
+        await module.InvokeVoidAsync("setCaretPosition", InputElementReference, position);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module != null)
+        {
+            var module = await _module;
+            await module.DisposeAsync();
+        }
+    }
+}

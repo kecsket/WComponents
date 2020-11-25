@@ -4,14 +4,14 @@
     {
         element.focus();
         element.setSelectionRange(pos, pos);
+    }
+    console.log('Set caret position: ', pos);
+}
 
-    }
-    else if (ctrl.createTextRange)
-    {
-        var range = element.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', pos);
-        range.moveStart('character', pos);
-        range.select();
-    }
+export function getCaretPosition(element)
+{
+    var pos = element.selectionStart;
+    var pos1 = element.selectionEnd;
+    console.log('Get caret position: ', pos,pos1);
+    return pos;
 }

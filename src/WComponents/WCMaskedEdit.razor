@@ -7,8 +7,7 @@
        class="@CssClass"
        value="@CurrentValue"
        @oninput="EventCallback.Factory.CreateBinder<string>(this, __value => CurrentValueAsString = __value, CurrentValueAsString)"
-       @onkeypress="KeyPressed"
-       @onkeydown="KeyDown"/>
+       @onkeydown="KeyDown" @onkeydown:preventDefault/>
 
 @code
 {
@@ -16,29 +15,21 @@
     private Task<IJSObjectReference> Module => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/WComponents/js/WCMaskedEdit.js").AsTask();
 
     ElementReference InputElementReference;
-    private int KeyDownPosition = 99999;
 
     private async void KeyDown(KeyboardEventArgs args)
     {
-        KeyDownPosition = await GetCaretPositionAsync();
-    }
+        int KeyDownPosition = await GetCaretPositionAsync();
 
-    private void KeyPressed(KeyboardEventArgs args)
-    {
         if (args.Key == "r")
         {
             CurrentValueAsString = "httthhhhhr" + KeyDownPosition.ToString();
+            await SetCaretPositionAsync(4);
 
         }
         if (args.Key == "t")
         {
-            SetCaretPosition(2);
+            await SetCaretPositionAsync(2);
         }
-    }
-
-    private void SetCaretPosition(int position)
-    {
-        Task.Run(async () => await SetCaretPositionAsync(position));
     }
 
     private async Task SetCaretPositionAsync(int position)

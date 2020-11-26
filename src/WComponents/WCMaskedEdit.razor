@@ -6,19 +6,24 @@
        @attributes="AdditionalAttributes"
        class="@CssClass"
        value="@CurrentValue"
-       @oninput="EventCallback.Factory.CreateBinder<string>(this, __value => CurrentValueAsString = __value, CurrentValueAsString)"
-       @onkeydown="KeyDown" @onkeydown:preventDefault/>
+       @onchange="EventCallback.Factory.CreateBinder<string>(this, __value => CurrentValueAsString = __value, CurrentValueAsString)"
+       @onkeyup="KeyUp" />
+<div>
+Position: @KeyDownPosition
+</div>
 
 @code
 {
     private Task<IJSObjectReference> _module;
     private Task<IJSObjectReference> Module => _module ??= JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/WComponents/js/WCMaskedEdit.js").AsTask();
+    private int KeyDownPosition;
 
     ElementReference InputElementReference;
 
-    private async void KeyDown(KeyboardEventArgs args)
+    private async void KeyUp(KeyboardEventArgs args)
     {
-        int KeyDownPosition = await GetCaretPositionAsync();
+        KeyDownPosition = await GetCaretPositionAsync();
+        StateHasChanged();
 
         if (args.Key == "r")
         {
@@ -30,6 +35,8 @@
         {
             await SetCaretPositionAsync(2);
         }
+
+
     }
 
     private async Task SetCaretPositionAsync(int position)
